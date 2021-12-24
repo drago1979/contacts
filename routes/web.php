@@ -45,8 +45,14 @@ Route::delete('/contacts/{contact}', [\App\Http\Controllers\ContactController::c
 // Phone numbers
 Route::delete('/contacts/{contact}/phone_numbers/{phone_number}', [App\Http\Controllers\PhoneNumberController::class, 'destroy'])->name('phone_numbers.delete');
 
-//Route::delete('/contacts/{contact}/phone_numbers/{phone_number}', function () {
-//    dd('hello');
-//})->name('phone_numbers.delete');
+// Contacts & phone numbers - store & update
+//Route::post('/contacts_and_phone_numbers', [\App\Http\Controllers\ContactPhoneController::class, 'getPayload'])->name('contacts_and_numbers');
 
-// Test routs
+Route::post('/contacts_and_phone_numbers', function (\Illuminate\Http\Request $request) {
+
+    dd($request->all());
+
+})->name('contacts_and_numbers');
+
+
+// Test routes

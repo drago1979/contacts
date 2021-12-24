@@ -133,10 +133,14 @@
     // --------------------------------------------------------
 
     // Adding a new, empty, field for phone description and number + buttons
-    function addNewNumberField(id) {
+    function addNewNumberField(idElementToAppendMarkup, contactId) {
 
         let markup = `
             <div id="contact_number_temporary_id_${temporaryId}" class="row">
+
+                <input type="hidden" name="new_phone_number[${temporaryId}][contact_id]"
+                value=${contactId}>
+
                 <div class="col-lg-4 border border-1">
                     <input type="text" value="">
                 </div>
@@ -162,7 +166,8 @@
 
         temporaryId++;
 
-        $(id).append(markup);
+
+        $(idElementToAppendMarkup).append(markup);
     }
 
     // Adding a new, empty, field for Contact (Contact`s info + phone info
