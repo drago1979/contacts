@@ -20,3 +20,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+// Custom added:
+Route::get('/privacy_policy', function () {
+    return view('privacy_policy');
+})->name('privacy.policy');
+
+Route::get('/contacts', [App\Http\Controllers\ContactController::class, 'index'])->name('contacts.all');
+
+Route::delete('/contacts/{contact}', [\App\Http\Controllers\ContactController::class, 'destroy'])->name('contacts.delete');
+
