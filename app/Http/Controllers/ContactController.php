@@ -11,9 +11,12 @@ class ContactController extends Controller
     {
         $contacts = Contact::all();
 
-//        dd($contacts[0]->phoneNumbers);
-//
-//        dd($contacts->phoneNumbers);
         return view('contacts.show_all', compact('contacts'));
+    }
+
+
+    public function destroy(Contact $contact)
+    {
+        $contact->delete();
     }
 }

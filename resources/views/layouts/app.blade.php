@@ -124,7 +124,7 @@
 <script>
 
     // This counter is needed for generating temporary Ids for items added
-    // by user (still not saved in the DB)
+    // by user (items not yet saved in the DB);
     let temporaryId = 0;
 
 
@@ -136,7 +136,7 @@
     function addNewNumberField(id) {
 
         let markup = `
-            <div class="row">
+            <div id="contact_number_temporary_id_${temporaryId}" class="row">
                 <div class="col-lg-4 border border-1">
                     <input type="text" value="">
                 </div>
@@ -146,12 +146,23 @@
                 </div>
 
                 <div class="col-lg-3 border border-1">
-                    <button type="button" class="c-button-link">Delete</button>
+                                        <button type="button" id="js-btn-call-delete-non-existing-record-modal"
+                                                class="btn rounded-pill c-btn-orange mb-4 c-btn-lg"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#js-delete-non-existing-record-modal"
+                                                onclick="passMarkupElementIdToNonExistingRecordDeleteModal(
+                                                    '#contact_number_temporary_id_${temporaryId}')"
+
+                                        >
+                                            Delete - modal
+                                        </button>
                 </div>
             </div>
         `;
 
-        $('#' + id).append(markup);
+        temporaryId++;
+
+        $(id).append(markup);
     }
 
     // Adding a new, empty, field for Contact (Contact`s info + phone info
@@ -163,63 +174,68 @@
         let markup = `
             <div id="contact_temporary_id_${temporaryId}" class="row">
 
-            <div class="col-lg-5 border border-1">
+                <div class="col-lg-5 border border-1">
 
-                <div class="row">
-                    <div class="col-lg">
-                        <input type="text" value="">
-            </div>
+                    <div class="row">
+                        <div class="col-lg">
+                            <input type="text" value="">
+                        </div>
 
-            <div class="col-lg">
-                <input type="text" value="">
-            </div>
-        </div>
+                        <div class="col-lg">
+                            <input type="text" value="">
+                        </div>
+                    </div>
 
-            <div class="row">
-                <div class="col-lg border border-1">
-                    <button type="button" class="c-button-link">Delete</button>
+                    <div class="row">
+                        <div class="col-lg border border-1">
+
+                            <button type="button" id="js-btn-call-delete-existing-record-modal"
+                                    class="btn rounded-pill c-btn-orange mb-4 c-btn-lg"
+                                    data-bs-toggle="modal" data-bs-target="#js-delete-non-existing-record-modal"
+                                    onclick="passMarkupElementIdToNonExistingRecordDeleteModal(
+                                        '#contact_temporary_id_${temporaryId}')"
+                            >
+                                Delete - modal
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-7 border border-1">
+
+                    <div id="contact_temporary_id_${temporaryId}_phones" class="js-wrapper">
+
+                        <div class="row">
+                            <div class="col-lg-4 border border-1">
+                                <input type="text" value="">
+                            </div>
+
+                            <div class="col-lg-5 border border-1">
+                                <input type="text" value="">
+                            </div>
+
+                            <div class="col-lg-3 border border-1">
+                                <button type="button" class="c-button-link">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-lg border border-1">
+                            <button onclick="addNewNumberField('contact_temporary_id_${temporaryId}_phones')"
+                                type="button"
+                                class="c-button-link"
+                                >
+                                Add number
+                            </button>
+                    </div>
                 </div>
             </div>
-
         </div>
-
-
-
-            <div class="col-lg-7 border border-1">
-
-            <div id="contact_temporary_id_${temporaryId}_phones" class="js-wrapper">
-
-    <div class="row">
-    <div class="col-lg-4 border border-1">
-    <input type="text" value="">
-    </div>
-
-    <div class="col-lg-5 border border-1">
-    <input type="text" value="">
-    </div>
-
-    <div class="col-lg-3 border border-1">
-    <button type="button" class="c-button-link">Delete</button>
-    </div>
-    </div>
-
-
-    </div>
-
-
-
-            <div class="row">
-            <div class="col-lg border border-1">
-            <button onclick="addNewNumberField('contact_temporary_id_${temporaryId}_phones')"
-    type="button"
-    class="c-button-link"
-    >
-    Add number
-    </button>
-    </div>
-    </div>
-    </div>
-    </div>
     `
         ;
 
@@ -228,44 +244,78 @@
     }
 
 
-    // --------------------------------------------------------
-    // DELETING CONTACTS AND NUMBERS
-    // --------------------------------------------------------
+// --------------------------------------------------------
+// DELETING RECORDS (CONTACTS AND NUMBERS)
+// --------------------------------------------------------
 
-    //
-    // DELETING EXISTING CONTACTS
-    //
+//
+// DELETING EXISTING RECORDS
+//
 
-    // Existing-contact-delete-button passes the DELETE URL to a the
-    // modal`s (delete-existing-contact) form (delete-existing-contact)
-    function passUrlToExistingContactDeleteModal(markUpId, url) {
-
-        $('#js-delete-existing-contact-form').attr('action', url);
-
+    // Existing-record-delete-button passes the:
+    //      1) Markup-ID &
+    //      2) DELETE URL to the
+    // modal`s (delete-existing-record) form (delete-existing-record)
+    function passUrlAndMarkupElementIdToExistingRecordDeleteModal(markUpId, url) {
+        $('#js-modal-delete-existing-record-delete-button').attr('data-markupid', markUpId);
+        $('#js-delete-existing-record-form').attr('action', url);
     }
 
     // When delete-existing-contact modal/form is submited,
     // do the following:
-    // 1. Send AJAX request
-    // 2. Record deleted ? => Call a function to delete the record from markup
-    // 3. Record not deleted ? => Return "not deleted" info
+    //      1. Send AJAX request
+    //      2. Record deleted ? => Call a function to delete the record from markup
+    //      3. Record not deleted ? => Return "not deleted" info
 
-    $('#js-contact-form-modal').on('submit', function (e) {
+    $('#js-delete-existing-record-modal').on('submit', function (e) {
         e.preventDefault();
 
         $.ajax({
-            url: $('#js-form').attr('action'),
+            url: $('#js-delete-existing-record-form').attr('action'),
             type: 'post',
-            data: $('#js-form').serialize(),
+            data: $('#js-delete-existing-record-form').serialize(),
             success: function () {
-                $('#js-contact-form-modal').modal('hide');
-                $('#js-message-sent-modal').modal('show');
+                $('#js-delete-existing-record-modal').modal('hide');
+                deleteExistingRecordFromMarkup($('#js-modal-delete-existing-record-delete-button').attr('data-markupid'));
             },
             error: function () {
-                alert('Doslo je do greske. Molimo Vas pokusajte kasnije.')
+                alert('An error occurred. Please try again later or contact our support.')
+                $('#js-delete-existing-record-modal').modal('hide');
             }
         });
     });
+
+
+//
+// DELETING RECORDS NOT YET IN DATABASE
+//
+
+    function passMarkupElementIdToNonExistingRecordDeleteModal(temporaryElementId) {
+        $('#js-modal-delete-non-existing-record-delete-button').attr('data-markupid', temporaryElementId);
+    }
+
+    //
+    // USED WHEN DELETING BOTH TYPES OF RECORDS (IN & NOT IN THE DATABASE)
+    //
+
+    // Called in 2 cases:
+    //      1) If "delete-existing-record" AJAX successful:
+    //      2) If "delete-non-existing-record" modal`s delete button clicked.
+    //
+    // Performs:
+    //      1) delete the element from markup
+    //      2) inform the user
+    function deleteExistingRecordFromMarkup(markupId) {
+
+        console.log(markupId);
+
+        $(markupId).remove();
+        alert('Record deleted.');
+        $('#js-delete-non-existing-record-modal').modal('hide');
+
+    }
+
+
 </script>
 
 
