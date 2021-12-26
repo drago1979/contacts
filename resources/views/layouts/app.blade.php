@@ -123,30 +123,37 @@
 {{-- Move this code to separate file --}}
 <script>
 
-    // This counter is needed for generating temporary Ids for items added
+    // These counters are needed for generating temporary Ids for items added
     // by user (items not yet saved in the DB);
-    let temporaryId = 0;
+    // These IDs are used (mostly) for array keys.
+    let temporaryIdNewNumberExistingContact = 0;
+    let temporaryIdNewNumberNonExistingContact = 0;
+    let temporaryIdNonExistingContact = 0;
 
-
-    // --------------------------------------------------------
-    // ADDING NEW, EMPTY, INPUTS (Numbers, Contacts)
-    // --------------------------------------------------------
+// --------------------------------------------------------
+// ADDING NEW, EMPTY, INPUTS (Numbers, Contacts)
+// --------------------------------------------------------
 
     // Adding a new, empty, field for phone description and number + buttons
-    function addNewNumberField(idElementToAppendMarkup, contactId) {
+    // for EXISTING contacts
+    function addNewNumberFieldExistingContact(idElementToAppendMarkup, contactId) {
 
         let markup = `
-            <div id="contact_number_temporary_id_${temporaryId}" class="row">
+            <div id="contact_number_temporary_id_${temporaryIdNewNumberExistingContact}" class="row">
 
-                <input type="hidden" name="new_phone_number[${temporaryId}][contact_id]"
+                <input type="hidden" name="contacts[${contactId}][phone_numbers][t${temporaryIdNewNumberExistingContact}][id]"
+                value='b'>
+
+                <input type="hidden" name="contacts[${contactId}][phone_numbers][t${temporaryIdNewNumberExistingContact}][contact_id]"
                 value=${contactId}>
 
+
                 <div class="col-lg-4 border border-1">
-                    <input type="text" value="">
+                    <input type="text" name="contacts[${contactId}][phone_numbers][t${temporaryIdNewNumberExistingContact}][description]" value="">
                 </div>
 
                 <div class="col-lg-5 border border-1">
-                    <input type="text" value="">
+                    <input type="text" name="contacts[${contactId}][phone_numbers][t${temporaryIdNewNumberExistingContact}][number]" value="">
                 </div>
 
                 <div class="col-lg-3 border border-1">
@@ -155,7 +162,7 @@
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#js-delete-non-existing-record-modal"
                                                 onclick="passMarkupElementIdToNonExistingRecordDeleteModal(
-                                                    '#contact_number_temporary_id_${temporaryId}')"
+                                                    '#contact_number_temporary_id_${temporaryIdNewNumberExistingContact}')"
 
                                         >
                                             Delete - modal
@@ -164,30 +171,66 @@
             </div>
         `;
 
-        temporaryId++;
+        temporaryIdNewNumberExistingContact++;
 
 
         $(idElementToAppendMarkup).append(markup);
     }
 
-    // Adding a new, empty, field for Contact (Contact`s info + phone info
+    // Adding a new, empty, field for phone description and number + buttons
+    // for NON-EXISTING contact
+    function addNewNumberFieldNonExistingContact(idElementToAppendMarkup, temporaryIdNonExistingContact) {
+
+        let markup = `
+            <div id="non_existing_contact_number_temporary_id_${temporaryIdNewNumberNonExistingContact}" class="row">
+
+                <div class="col-lg-4 border border-1">
+                    <input type="text" name="new_contacts[${temporaryIdNonExistingContact}][phone_numbers][${temporaryIdNewNumberNonExistingContact}][description]" value="">
+                </div>
+
+                <div class="col-lg-5 border border-1">
+                    <input type="text" name="new_contacts[${temporaryIdNonExistingContact}][phone_numbers][${temporaryIdNewNumberNonExistingContact}][number]" value="">
+                </div>
+
+                <div class="col-lg-3 border border-1">
+                                        <button type="button" id="js-btn-call-delete-non-existing-record-modal"
+                                                class="btn rounded-pill c-btn-orange mb-4 c-btn-lg"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#js-delete-non-existing-record-modal"
+                                                onclick="passMarkupElementIdToNonExistingRecordDeleteModal(
+                                                    '#non_existing_contact_number_temporary_id_${temporaryIdNewNumberNonExistingContact}')"
+
+                                        >
+                                            Delete - modal
+                                        </button>
+                </div>
+            </div>
+        `;
+
+        $(idElementToAppendMarkup).append(markup);
+
+        temporaryIdNewNumberNonExistingContact++;
+
+    }
+
+
+    // Adding a new, empty, field for new Contact (Contact`s info + phone info
     // (description, number, buttons)
     function addNewContactField(id) {
 
-        temporaryId++;
-
         let markup = `
-            <div id="contact_temporary_id_${temporaryId}" class="row">
+            <div id="contact_temporary_id_${temporaryIdNonExistingContact}" class="row">
 
                 <div class="col-lg-5 border border-1">
 
+
                     <div class="row">
                         <div class="col-lg">
-                            <input type="text" value="">
+                            <input type="text" name="new_contacts[${temporaryIdNonExistingContact}][first_name] value="">
                         </div>
 
                         <div class="col-lg">
-                            <input type="text" value="">
+                            <input type="text" name="new_contacts[${temporaryIdNonExistingContact}][last_name] value="">
                         </div>
                     </div>
 
@@ -198,7 +241,7 @@
                                     class="btn rounded-pill c-btn-orange mb-4 c-btn-lg"
                                     data-bs-toggle="modal" data-bs-target="#js-delete-non-existing-record-modal"
                                     onclick="passMarkupElementIdToNonExistingRecordDeleteModal(
-                                        '#contact_temporary_id_${temporaryId}')"
+                                        '#contact_temporary_id_${temporaryIdNonExistingContact}')"
                             >
                                 Delete - modal
                             </button>
@@ -210,34 +253,23 @@
 
                 <div class="col-lg-7 border border-1">
 
-                    <div id="contact_temporary_id_${temporaryId}_phones" class="js-wrapper">
+                    <div id="contact_temporary_id_${temporaryIdNonExistingContact}_phones"
+                    class="js-wrapper">
 
-                        <div class="row">
-                            <div class="col-lg-4 border border-1">
-                                <input type="text" value="">
-                            </div>
-
-                            <div class="col-lg-5 border border-1">
-                                <input type="text" value="">
-                            </div>
-
-                            <div class="col-lg-3 border border-1">
-                                <button type="button" class="c-button-link">Delete</button>
-                            </div>
-                        </div>
                     </div>
 
 
 
-                    <div class="row">
-                        <div class="col-lg border border-1">
-                            <button onclick="addNewNumberField('contact_temporary_id_${temporaryId}_phones')"
+                <div class="row">
+                    <div class="col-lg border border-1">
+                        <button onclick="addNewNumberFieldNonExistingContact('#contact_temporary_id_${temporaryIdNonExistingContact}_phones', '${temporaryIdNonExistingContact}')"
                                 type="button"
                                 class="c-button-link"
-                                >
-                                Add number
-                            </button>
+                        >
+                            Add number
+                        </button>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -245,17 +277,18 @@
         ;
 
         $('#' + id).append(markup);
+        temporaryIdNonExistingContact++;
 
     }
 
 
-// --------------------------------------------------------
-// DELETING RECORDS (CONTACTS AND NUMBERS)
-// --------------------------------------------------------
+    // --------------------------------------------------------
+    // DELETING RECORDS (CONTACTS AND NUMBERS)
+    // --------------------------------------------------------
 
-//
-// DELETING EXISTING RECORDS
-//
+    //
+    // DELETING EXISTING RECORDS
+    //
 
     // Existing-record-delete-button passes the:
     //      1) Markup-ID &
@@ -291,9 +324,9 @@
     });
 
 
-//
-// DELETING RECORDS NOT YET IN DATABASE
-//
+    //
+    // DELETING RECORDS NOT YET IN DATABASE
+    //
 
     function passMarkupElementIdToNonExistingRecordDeleteModal(temporaryElementId) {
         $('#js-modal-delete-non-existing-record-delete-button').attr('data-markupid', temporaryElementId);

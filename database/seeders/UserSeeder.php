@@ -14,10 +14,19 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+//        User - Admin
         User::create([
             'is_admin' => 1,
             'name' => 'orson',
             'email' => 'orson@gmail.com',
+            'password' => 'password'
+        ]);
+
+//        User - regular
+        User::create([
+            'is_admin' => 0,
+            'name' => 'francis',
+            'email' => 'francis@gmail.com',
             'password' => 'password'
         ]);
     }
