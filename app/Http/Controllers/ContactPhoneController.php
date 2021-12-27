@@ -12,8 +12,9 @@ class ContactPhoneController extends Controller
     {
         !($contacts = $request->input('contacts')) ?: $this->updateExistingContacts($contacts);
 
-
         !($newContacts = $request->input('new_contacts')) ?: $this->createNewContacts($newContacts);
+
+        return redirect(route('contacts.edit_all'));
 
     }
 

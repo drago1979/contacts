@@ -29,26 +29,42 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 /*
 |--------------------------------------------------------------------------
-| Custom added Routes
+| Additional Routes
 |--------------------------------------------------------------------------
 */
 
+/*
+|--------------------------------------------------------------------------
+| Authenticated users:
+ */
 Route::group(['middleware' => 'auth'], function () {
 
-    // Contacts - all users can access
+/*
+| All authenticated users can access:
+ */
+    // Contacts
     Route::get('/contacts', [App\Http\Controllers\ContactController::class, 'index'])->name('contacts.all');
-
-    // Contacts - only ADMIN users can access
     Route::get('/contacts/edit_all', [App\Http\Controllers\ContactController::class, 'editAll'])->name('contacts.edit_all');
-    Route::delete('/contacts/{contact}', [\App\Http\Controllers\ContactController::class, 'destroy'])->name('contacts.delete');
 
-    // Phone numbers
-    Route::delete('/contacts/{contact}/phone_numbers/{phone_number}', [App\Http\Controllers\PhoneNumberController::class, 'destroy'])->name('phone_numbers.delete');
+/*
+| Only ADMIN users can access:
+ */
+    Route::group(['middleware' => 'can:update-delete-store'], function () {
 
-    // Contacts & phone numbers - store & update
-    Route::post('/contacts_and_phone_numbers', [\App\Http\Controllers\ContactPhoneController::class, 'getPayload'])->name('contacts_and_numbers');
+        // Contacts
+        Route::delete('/contacts/{contact}', [\App\Http\Controllers\ContactController::class, 'destroy'])->name('contacts.delete');
+        // Phone numbers
+        Route::delete('/contacts/{contact}/phone_numbers/{phone_number}', [App\Http\Controllers\PhoneNumberController::class, 'destroy'])->name('phone_numbers.delete');
+        // Contacts & phone numbers - store & update
+        Route::post('/contacts_and_phone_numbers', [\App\Http\Controllers\ContactPhoneController::class, 'getPayload'])->name('contacts_and_numbers');
+    });
 
 });
+
+/*
+|--------------------------------------------------------------------------
+| All (non-authenticated) users:
+ */
 
 // Privacy policy
 Route::get('/privacy_policy', function () {
