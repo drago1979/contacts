@@ -78,15 +78,12 @@
                                         <button type="button"
                                                 class="btn btn-link c-btn-link link-danger c-padding-left-remove"
                                                 data-bs-toggle="modal" data-bs-target="#js-delete-existing-record-modal"
-                                        <!-- !!!!!!!!!!           This "onclick" and delete phone onclick should be abstracted -->
                                         onclick="passUrlAndMarkupElementIdToExistingRecordDeleteModal(
                                         '#contact_id_{{ $contact->id }}',
                                         '{{ route('contacts.delete', [$contact->id]) }}') "
                                         >
                                         Delete
                                         </button>
-
-
                                     </div>
                                 </div>
                             @endcan
@@ -153,8 +150,7 @@
                                                 </button>
                                             </div>
                                         @endcan
-
-
+                                        
                                     </div>
                                 @endforeach
                             </div>
