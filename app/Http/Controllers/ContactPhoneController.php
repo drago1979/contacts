@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactPhoneRequest;
 use App\Models\Contact;
-use App\Models\PhoneNumber;
-use Illuminate\Http\Request;
+
 
 class ContactPhoneController extends Controller
 {
-    public function getPayload(Request $request)
+    public function getPayload(ContactPhoneRequest $request)
     {
         !($contacts = $request->input('contacts')) ?: $this->updateExistingContacts($contacts);
 
@@ -24,17 +24,23 @@ class ContactPhoneController extends Controller
     {
         foreach ($contacts as $contact) {
             $dbContact = Contact::find($contact['id']);
+//
+//            dd(isset($contact['phone_numbers']));
+//            dd(gettype($contact['phone_numbers']));
 
-            foreach ($contact['phone_numbers'] as $phoneNumber) {
+            // If existing contact has no phone numbers, we will skip updateOrCreate
+            if (isset($contact['phone_numbers'])) {
 
-                $dbContact->phoneNumbers()->updateOrCreate(
-                    ['id' => $phoneNumber['id']],
-                    ['description' => $phoneNumber['description'], 'number' => $phoneNumber['number']]
-                );
+                foreach ($contact['phone_numbers'] as $phoneNumber) {
+
+                    $dbContact->phoneNumbers()->updateOrCreate(
+                        ['id' => $phoneNumber['id']],
+                        ['description' => $phoneNumber['description'], 'number' => $phoneNumber['number']]
+                    );
+                }
             }
 
             $dbContact->update($contact);
-
         }
     }
 
@@ -45,9 +51,12 @@ class ContactPhoneController extends Controller
 
             $dbContact = Contact::create($newContact);
 
-            foreach ($newContact['phone_numbers'] as $phoneNumber) {
+            // If no numbers were added to new contact, we will skip "create" numbers
+            if (isset($newContact['phone_numbers'])) {
+                foreach ($newContact['phone_numbers'] as $phoneNumber) {
 
-                $dbContact->phoneNumbers()->create($phoneNumber);
+                    $dbContact->phoneNumbers()->create($phoneNumber);
+                }
             }
         }
     }

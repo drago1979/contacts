@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-    {{--    All contacts --}}
-    <div class="container">
-        {{--        Top Title --}}
+
+    <div class="container c-container">
+        <!--    FORM TITLE  -->
         <div class="row">
-            <div class="col-lg border border-1">
+            <div class="col-lg">
                 <h2>Contacts</h2>
             </div>
         </div>
 
-        {{--        Column titles --}}
+        <!--    FIELDS` TITLES    -->
         <div class="row">
 
             <div class="col-lg-5">
@@ -30,54 +30,60 @@
             </div>
         </div>
 
+        <!--    SEPARATOR LINE between "column titles" & "contacts" -->
+        <div class="row">
+            <div class="col">
+                <div class="c-border-line mb-2 mx-auto"></div>
+            </div>
+        </div>
+
+        <!-- FORM CONTAINING ALL CONTACT DATA (contacts & phone numbers)    -->
         <form action="{{ route('contacts_and_numbers') }}"
               method="POST"
         >
             @csrf
 
-            <div id="js-contacts-wrapper" class="wrapper">
+            <div id="js-contacts-wrapper">
 
-                {{-- One contact --}}
+                <!-- ONE CONTACT DATA (name & phone) -->
                 @foreach($contacts as $contact)
-                    <div id="contact_id_{{ $contact->id }}" class="row">
-                        {{--        Contact personal info--}}
-                        <div class="col-lg-5 border border-1">
+                    <div id="contact_id_{{ $contact->id }}" class="row mb-2">
 
-                            {{--                            <input type="hidden" name="contacts[{{ $i }}][id]"--}}
+                        <!--    ONE CONTACT NAME (first, last) -->
+                        <div class="col-lg-5">
+
                             <input type="hidden" name="contacts[{{ $contact->id }}][id]"
-
                                    value="{{ $contact->id }}">
 
                             <div class="row">
                                 <div class="col-lg">
-                                    {{--                                    <input type="text" name="contacts[{{ $i }}][first_name]"--}}
                                     <input type="text" name="contacts[{{ $contact->id }}][first_name]"
-
-                                           value="{{ $contact->first_name }}">
+                                           value="{{ $contact->first_name }}"
+                                           required
+                                    >
                                 </div>
 
                                 <div class="col-lg">
-                                    {{--                                    <input type="text" name="contacts[{{ $i }}][last_name]"--}}
                                     <input type="text" name="contacts[{{ $contact->id }}][last_name]"
-
-                                           value="{{ $contact->last_name }}">
+                                           value="{{ $contact->last_name }}"
+                                           required
+                                    >
                                 </div>
                             </div>
 
+                            <!-- DELETE SINGLE CONTACT BUTTON -->
                             @can('update-delete-store')
                                 <div class="row">
-                                    <div class="col-lg border border-1">
-
-                                        {{-- Button invokes modal to delete a user --}}
+                                    <div class="col-lg">
                                         <button type="button"
-                                                class="btn rounded-pill c-btn-orange mb-4 c-btn-lg"
+                                                class="btn btn-link c-btn-link link-danger c-padding-left-remove"
                                                 data-bs-toggle="modal" data-bs-target="#js-delete-existing-record-modal"
-                                                {{-- !!!!!!!!!!           This "onclick" and delete phone onclick should be abstracted --}}
-                                                onclick="passUrlAndMarkupElementIdToExistingRecordDeleteModal(
-                                                    '#contact_id_{{ $contact->id }}',
-                                                    '{{ route('contacts.delete', [$contact->id]) }}') "
+                                        <!-- !!!!!!!!!!           This "onclick" and delete phone onclick should be abstracted -->
+                                        onclick="passUrlAndMarkupElementIdToExistingRecordDeleteModal(
+                                        '#contact_id_{{ $contact->id }}',
+                                        '{{ route('contacts.delete', [$contact->id]) }}') "
                                         >
-                                            Delete
+                                        Delete
                                         </button>
 
 
@@ -88,17 +94,17 @@
 
                         </div>
 
-                        {{-- Contact`s phone numbers --}}
-
-                        <div class="col-lg-7 border border-1">
+                        <!-- CONTACTS PHONE NUMBERS -->
+                        <div class="col-lg-7">
 
                             <div id="js-contact_id_{{ $contact->id }}_phones"
                                  class="js-wrapper"
                                  data-contactid= {{ $contact->id }}
                             >
 
-                                @foreach($contact->phoneNumbers as $contactPhone)
+                            @foreach($contact->phoneNumbers as $contactPhone)
 
+                                <!-- CONTACTS SINGLE PHONE NUMBER -->
                                     <div id="contact_id_{{ $contact->id }}_phone_number_id_{{ $contactPhone->id }}"
                                          class="row">
 
@@ -110,51 +116,59 @@
                                                name="contacts[{{ $contact->id }}][phone_numbers][{{ $contactPhone->id }}][contact_id]"
                                                value="{{ $contact->id }}">
 
-                                        <div class="col-lg-4 border border-1">
-                                            <input type="text"
+                                        <div
+                                            class="{{ Auth::user()->can('update-delete-store') ? 'col-lg-5' : 'col-lg-6' }}">
+                                            <input class="mb-2"
+                                                   type="text"
                                                    name="contacts[{{ $contact->id }}][phone_numbers][{{ $contactPhone->id }}][description]"
-                                                   value={{ $contactPhone->description }}>
+                                                   value="{{ $contactPhone->description }}"
+                                                   required
+                                            >
                                         </div>
 
-                                        <div class="col-lg-5 border border-1">
-                                            <input type="text"
+                                        <div
+                                            class="{{ Auth::user()->can('update-delete-store') ? 'col-lg-5' : 'col-lg-6' }}">
+                                            <input class="mb-2"
+                                                   type="text"
                                                    name="contacts[{{ $contact->id }}][phone_numbers][{{ $contactPhone->id }}][number]"
-                                                   value={{ $contactPhone->number }}>
+                                                   value="{{ $contactPhone->number }}"
+                                                   required
+                                            >
                                         </div>
 
-                                        <div class="col-lg-3 border border-1">
+                                        <!-- DELETE SINGLE PHONE NUMBER BUTTON -->
+                                        @can('update-delete-store')
 
-                                            @can('update-delete-store')
+                                            <div class="col-lg-2">
 
                                                 <button type="button"
-                                                        class="btn rounded-pill c-btn-orange mb-4 c-btn-lg"
+                                                        class="btn btn-link c-btn-link link-danger"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#js-delete-existing-record-modal"
-                                                        {{-- !!!!!!!!!!           This "onclick" and delete contact onclick should be abstracted --}}
                                                         onclick="passUrlAndMarkupElementIdToExistingRecordDeleteModal(
                                                             '#contact_id_{{ $contact->id }}_phone_number_id_{{ $contactPhone->id }}',
                                                             '{{ route('phone_numbers.delete', [$contact->id, $contactPhone->id]) }}') "
-
                                                 >
                                                     Delete
                                                 </button>
+                                            </div>
+                                        @endcan
 
-                                            @endcan
-                                        </div>
 
                                     </div>
                                 @endforeach
                             </div>
 
-                            {{-- Add new number --}}
+
+                            <!-- ADD NEW PHONE NUMBER (to existing contact) BUTTON -->
                             @can('update-delete-store')
 
                                 <div class="row">
-                                    <div class="col-lg border border-1">
+                                    <div class="col-lg">
                                         <button
                                             onclick="addNewNumberFieldExistingContact('#js-contact_id_{{ $contact->id }}_phones', {{ $contact->id }})"
                                             type="button"
-                                            class="c-button-link"
+                                            class="btn btn-link c-btn-link link-danger c-padding-left-remove"
                                         >
                                             Add number
                                         </button>
@@ -162,31 +176,48 @@
                                 </div>
                             @endcan
                         </div>
+
+                        <!--        Separator (line) - comes after single contact -->
+                        <div class="row">
+                            <div class="col">
+                                <div class="c-border-line mb-2 mx-auto"></div>
+                            </div>
+                        </div>
                     </div>
+
+
+
                 @endforeach
 
             </div>
 
+            <!-- ADD NEW CONTACT & SUBMIT FORM BUTTONS -->
             @can('update-delete-store')
 
                 <div class="row">
-                    <div class="col-lg-2 border border-1">
-                        <button onclick="addNewContactField('js-contacts-wrapper')"
-                                type="button"
+                    <div class="col-lg-2">
+                        <button
+                            class="c-main-button c-padding-left-remove"
+                            onclick="addNewContactField('js-contacts-wrapper')"
+                            type="button"
                         >
                             Add a contact
                         </button>
                     </div>
 
-                    <div class="col-lg-1 border border-1">
-                        <button type="submit">Save</button>
+                    <div class="col-lg-1">
+                        <button
+                            class="c-main-button"
+                            type="submit"
+                        >
+                            Save
+                        </button>
                     </div>
                 </div>
 
             @endcan
 
         </form>
-
 
     </div>
 

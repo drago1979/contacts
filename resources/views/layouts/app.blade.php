@@ -9,36 +9,12 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    {{--    !!!!! --}}
-    {{--    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>--}}
-
-    {{--    !!!!! --}}
-    {{--    <meta name="description" content="{{ $page_description }}">--}}
-
-    {{--    !!!!! --}}
-    {{--    --}}{{-- CSS: Normalize --}}
-    {{--    <link href="http://default_project.test/assets/css/normalize.css" rel="stylesheet" type="text/css">--}}
-
-    {{-- CSS: Bootstrap:--}}
+    <!-- CSS: Bootstrap: -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    {{--    @if(app()->environment() == 'production')--}}
-    {{--        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">--}}
-    {{--    @elseif(app()->environment() == 'local')--}}
-    {{--        <link href={{ asset('assets/css/app.css') }} rel="stylesheet" type="text/css">--}}
-    {{--    @endif--}}
-
-
-<!-- Scripts -->
-    {{--    <script src="{{ asset('js/app.js') }}" defer></script>--}}
-
-
-<!-- Styles -->
-    {{--    <link href="{{ asset('css/app.css') }}" rel="stylesheet">--}}
-
-
-
+    <!-- Styles: custom -->
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
 
 </head>
@@ -108,12 +84,11 @@
 </div>
 
 
-
-{{-- JS: Jquery--}}
+<!-- JS: Jquery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-{{-- JS: Bootstrap & Poppers--}}
+<!-- JS: Bootstrap & Poppers -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
         crossorigin="anonymous"></script>
@@ -121,7 +96,7 @@
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
 
-{{--     JS: Custom--}}
+<!--     JS: Custom -->
 <script src="{{ asset('js/custom.js') }}"></script>
 
 </body>

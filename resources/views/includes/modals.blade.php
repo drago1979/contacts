@@ -17,7 +17,7 @@
 
             <div class="modal-body">
 
-                {{-- Form`s "action" attribute is added by custom JS (passUrlAndMarkupElementIdToExistingRecordDeleteModal() ) --}}
+                <!-- Form`s "action" attribute is added by custom JS (passUrlAndMarkupElementIdToExistingRecordDeleteModal() ) -->
                 <form id="js-delete-existing-record-form" class="login-form"
                       method="POST"
                       action=""
@@ -25,7 +25,7 @@
                     @method('DELETE')
                     @csrf
 
-                    {{-- Button`s "data-markupid" attribute is added by custom JS (passUrlAndMarkupElementIdToExistingRecordDeleteModal() ) --}}
+                    <!-- Button`s "data-markupid" attribute is added by custom JS (passUrlAndMarkupElementIdToExistingRecordDeleteModal() ) -->
                     <div class="text-center mt-2">
                         <button type="submit"
                                 id="js-modal-delete-existing-record-delete-button"
