@@ -1,3 +1,22 @@
+/*
+|--------------------------------------------------------------------------
+| Custom JS code
+|--------------------------------------------------------------------------
+| This file contains application`s custom JS code
+|
+*/
+
+
+
+// If the user is redirected to the page AFTER clicking on
+// "save" button, we will inform him/her
+(function checkIfPageReloadedAfterSave () {
+    if ($('#js-reload-after-save').attr('value') == 1) {
+        alert('If you made any changes - your records are saved.');
+    }
+})();
+
+
 
 // These counters are needed for generating temporary Ids for items added
 // by user (items not yet saved in the DB); These IDs are used as array
@@ -210,6 +229,7 @@ function passUrlAndMarkupElementIdToExistingRecordDeleteModal(markUpId, url) {
 
 }
 
+
 // When delete-existing-contact modal/form is submitted,
 // do the following:
 //      1. Send AJAX request
@@ -219,14 +239,13 @@ function passUrlAndMarkupElementIdToExistingRecordDeleteModal(markUpId, url) {
 $('#js-delete-existing-record-form').on('submit', function (e) {
     e.preventDefault();
 
-
     $.ajax({
         url: $('#js-delete-existing-record-form').attr('action'),
         type: 'post',
         data: $('#js-delete-existing-record-form').serialize(),
         success: function () {
-            $('#js-delete-existing-record-modal').modal('hide');
             deleteExistingAndNonExistingRecordFromMarkup($('#js-modal-delete-existing-record-delete-button').attr('data-markupid'));
+            $('#js-delete-existing-record-modal').modal('hide');
         },
         error: function () {
             alert('An error occurred. Please try again later or contact our support.')
@@ -235,13 +254,6 @@ $('#js-delete-existing-record-form').on('submit', function (e) {
     });
 });
 
-//
-// DELETING RECORDS NOT YET IN DATABASE
-//
-
-function passMarkupElementIdToNonExistingRecordDeleteModal(temporaryElementId) {
-    $('#js-modal-delete-non-existing-record-delete-button').attr('data-markupid', temporaryElementId);
-}
 
 //
 // USED WHEN DELETING BOTH TYPES OF RECORDS (IN & NOT IN THE DATABASE)
@@ -256,11 +268,14 @@ function passMarkupElementIdToNonExistingRecordDeleteModal(temporaryElementId) {
 //      2) inform the user (only for existing record deletion)
 function deleteExistingAndNonExistingRecordFromMarkup(markupId, empty = false) {
 
-    $(markupId).remove();
+    setTimeout(function () {
+        $(markupId).remove();
 
-    // Do this for records that do exist in database:
-    if (empty === false) {
-        alert('Record deleted.');
-        $('#js-delete-non-existing-record-modal').modal('hide');
-    }
+        // Do this for records that do exist in database:
+        if (empty === false) {
+            alert('Record deleted.');
+            $('#js-delete-non-existing-record-modal').modal('hide');
+        }
+    }, 200);
+
 }

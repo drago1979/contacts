@@ -18,14 +18,14 @@
             <div class="modal-body">
 
                 <!-- Form`s "action" attribute is added by custom JS (passUrlAndMarkupElementIdToExistingRecordDeleteModal() ) -->
-                <form id="js-delete-existing-record-form" class="login-form"
+                <form id="js-delete-existing-record-form" class="login-form d-flex justify-content-evenly"
                       method="POST"
                       action=""
                 >
-                    @method('DELETE')
-                    @csrf
+                @method('DELETE')
+                @csrf
 
-                    <!-- Button`s "data-markupid" attribute is added by custom JS (passUrlAndMarkupElementIdToExistingRecordDeleteModal() ) -->
+                <!-- Button`s "data-markupid" attribute is added by custom JS (passUrlAndMarkupElementIdToExistingRecordDeleteModal() ) -->
                     <div class="text-center mt-2">
                         <button type="submit"
                                 id="js-modal-delete-existing-record-delete-button"
@@ -36,16 +36,16 @@
                         </button>
                     </div>
 
+                    <div class="text-center mt-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                    </div>
+
                 </form>
 
             </div>
 
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    Cancel
-                </button>
-
-            </div>
         </div>
     </div>
 </div>

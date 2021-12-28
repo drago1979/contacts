@@ -78,11 +78,11 @@
                                         <button type="button"
                                                 class="btn btn-link c-btn-link link-danger c-padding-left-remove"
                                                 data-bs-toggle="modal" data-bs-target="#js-delete-existing-record-modal"
-                                        onclick="passUrlAndMarkupElementIdToExistingRecordDeleteModal(
-                                        '#contact_id_{{ $contact->id }}',
-                                        '{{ route('contacts.delete', [$contact->id]) }}') "
+                                                onclick="passUrlAndMarkupElementIdToExistingRecordDeleteModal(
+                                                    '#contact_id_{{ $contact->id }}',
+                                                    '{{ route('contacts.delete', [$contact->id]) }}') "
                                         >
-                                        Delete
+                                            Delete
                                         </button>
                                     </div>
                                 </div>
@@ -150,7 +150,7 @@
                                                 </button>
                                             </div>
                                         @endcan
-                                        
+
                                     </div>
                                 @endforeach
                             </div>
@@ -218,6 +218,10 @@
     </div>
 
     @include('includes.modals')
+
+    <!-- If user is redirected to the page after clicking "save", "value" attribute = "1" -->
+    <!-- This value is used by JS -->
+    <input id="js-reload-after-save" type="hidden" name="status" value="{{ session('reload_after_save') }}">
 
 
 @endsection
