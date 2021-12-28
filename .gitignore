@@ -2,7 +2,8 @@
 
 
 # PROJECT SPECIFIC DIRECTORIES/FILES:
-
+public/css
+public/js
 
 # DEFAULTS
  # (come with fresh installation (duplicates with the rest are removed) )
