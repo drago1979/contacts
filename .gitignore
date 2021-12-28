@@ -4,6 +4,7 @@
 # PROJECT SPECIFIC DIRECTORIES/FILES:
 public/css
 public/js
+public/mix-manifest.json
 
 # DEFAULTS
  # (come with fresh installation (duplicates with the rest are removed) )
