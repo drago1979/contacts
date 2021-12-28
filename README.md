@@ -1,8 +1,12 @@
 # CONTACTS APP
 
 ## About the app
-This is very small demo app created for the purpose of a job interview. Layout and features are 
-implemented according to instructions received from the interviewer.
+This is very small demo app created for the purpose of a job interview.  
+It holds records of "contact" - people with their phone numbers.  
+Registered users can only view the records.  
+Administrators can view, create, delete and modify them.  
+  
+Layout and features are implemented according to instructions given by the interviewer.
 
 ## Version requirements
 - PHP – 8.0.13
