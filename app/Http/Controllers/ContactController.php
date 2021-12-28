@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
-    public function index()
+    public function editAll()
     {
         $contacts = Contact::all();
 
-        return view('contacts.show_all', compact('contacts'));
+        return view('contacts.edit_all', compact('contacts'));
     }
 
 

@@ -401,16 +401,17 @@
 </head>
 <body class="antialiased">
 <div
-    class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
+    class="relative flex items-top justify-center bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0"
+    style="height: 80vh">
     @if (Route::has('login'))
         <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
             @auth
-                <a href="{{ url('/home') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Home</a>
+                {{--                <a href="{{ url('/home') }}" class="text-lg text-gray-700 dark:text-gray-500 underline">Enter the app...</a>--}}
             @else
-                <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+                <a href="{{ route('login') }}" class="text-lg text-gray-700 dark:text-gray-500 underline">Log in</a>
 
                 @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                    <a href="{{ route('register') }}" class="ml-4 text-lg text-gray-700 dark:text-gray-500 underline">Register</a>
                 @endif
             @endauth
         </div>
@@ -420,28 +421,26 @@
 
         <h1 class="text-center">Customers` Contact App</h1>
 
+        @auth
+            <div class="text-center">
+                <a href="{{ url('/home') }}" class="text-lg text-gray-700 dark:text-gray-500 underline">Enter the
+                    app</a>
+            </div>
+        @endauth
+
         <div class="max-w-6xl sm:px-6 lg:px-8 text-center">
             <img src="logo.jpg" alt="Contacts App Logo" class="h-25">
         </div>
-
-        <a href="{{ route('contacts.all') }}">
-            <div class="card">
-                <h2 class="text-center">Guest Space</h2>
-                <h3 class="text-center"> This is where you can see all existing contacts</h3>
-                <h4 class="text-center">- - - CLICK HERE - - -</h4>
-                <p class="text-center">...even if you do not have an account with us....</p>
-            </div>
-        </a>
     </div>
 </div>
 
 <footer>
     <div class="container">
         <p class="text-center text-sm f-white">
-            ©2021 Syncit Group - Sva prava zadržana.
+            ©2021 Syncit Group - All rights reserverd.
         </p>
 
-        <p class="text-center text-sm f-white">
+        <p class="text-center text-sm f-white underline">
             <a href="{{ route('privacy.policy') }}" target="_blank">Privacy Policy....</a>
         </p>
     </div>

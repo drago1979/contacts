@@ -9,6 +9,8 @@ class Contact extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['last_name', 'first_name'];
+
     protected $with = ['phoneNumbers:id,contact_id,description,number'];
 
 
@@ -17,4 +19,10 @@ class Contact extends Model
     {
         return $this->hasMany(PhoneNumber::class);
     }
+
+
+
+
+
+
 }
