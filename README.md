@@ -11,15 +11,13 @@ implemented according to instructions received from the interviewer.
 
 ## Installation
 
-1. Install new Laravel ("contacts") project locally.
-2. Create local git repository.
-3. Pull in the project using the following link:
+1. Pull in the project using the following link:
 ```
 https://github.com/drago1979/contacts.git
 
 ```
-4. Create .env file with valid data (DB credentials etc.).  
-5. In your terminal (working folder) run
+2. Create .env file with valid data (DB credentials etc.).  
+3. In your terminal (working folder) run
 ```
 composer install
 ```  
