@@ -174,8 +174,7 @@ function addNewContactField(id) {
 
                 <div class="col-lg-7">
 
-                    <div id="contact_temporary_id_${temporaryIdNonExistingContact}_phones"
-                         class="js-wrapper">
+                    <div id="contact_temporary_id_${temporaryIdNonExistingContact}_phones">
                     </div>
 
                 <div class="row">

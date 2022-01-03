@@ -95,7 +95,6 @@
                         <div class="col-lg-7">
 
                             <div id="js-contact_id_{{ $contact->id }}_phones"
-                                 class="js-wrapper"
                                  data-contactid= {{ $contact->id }}
                             >
 
